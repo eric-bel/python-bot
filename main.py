@@ -1,29 +1,22 @@
 from gettext import install
+from lib2to3.pgen2 import token
 from turtle import update
-from urllib import request, response
 import json
-import requests
 import const
+import time
+import requests
+from urllib import request, response
+import const
+from pprint import pprint
+
+def main():
+    while True:
+        url = const.URL.format(TOKEN=const.TOKEN, method=const.UPDATE_METH)
+        content = requests.get(url).text
+        data = json.loads(content)
+        pprint(data)
+        time.sleep(2)
 
 
-
-
-url = URL.format(TOKEN=TOKEN, method=updates)
- 
-response = requests.get(url)
-json_content = json.loads(response.text)
-print(json_content)
-
-# data = {
-#     "chat_id": "1448024821",
-#     "text": "Hello World!"
-# } eric
-
-# data = {
-#     "chat_id": "1978620067",
-#     "text": "Привет, любимая!"
-# }
-
-url = URL.format(TOKEN=TOKEN, method=send)
-response = requests.post(url, data=data)
-print(response.text)
+if __name__ == "__main__":
+    main()
