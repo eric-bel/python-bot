@@ -24,10 +24,10 @@ def gen_markup():
     markup.row_width = 3
     markup.add(InlineKeyboardButton("Frontend Georgia", url="https://t.me/frontge"),
                InlineKeyboardButton(
-                   "Backend Georgia", url="https://t.me/backendge"),
-               InlineKeyboardButton("ИТ и Психология", url="https://t.me/icyberpsy"))
-    # markup.row_width = 1
-    # markup.add()
+                   "Backend Georgia", url="https://t.me/backendge"))
+    markup.row_width = 1
+    markup.add(InlineKeyboardButton(
+        "ИТ и Психология", url="https://t.me/icyberpsy"))
     return markup
 
 
