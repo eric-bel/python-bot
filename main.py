@@ -1,12 +1,23 @@
 # from email import message
+import asyncio
 import telebot
 import const
 from telebot import types
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
+from telebot.async_telebot import AsyncTeleBot
 
 
 token = const.TOKEN
-bot = telebot.TeleBot(token)
+# bot = telebot.TeleBot(token)
+bot = AsyncTeleBot(token=token)
+
+
+async def update_listener(messages):
+    for message in messages:
+        if message.text == '/start':
+            await bot.send_message(message.chat.id, 'Hello!')
+
+bot.set_update_listener(update_listener)
 
 
 def gen_markup():
@@ -49,55 +60,55 @@ def list_markup():
 
 
 @bot.callback_query_handler(func=lambda call: True)
-def callback_inline(call):
+async def callback_inline(call):
     if call.message:
         if call.data == "hr":
-            mess = "В основном чате @itgeorgia запрещено публиковать вакансии. \nЕсть ряд дочерних и партнёрских чатов для публикации вакансий:"
-            bot.send_message(call.message.chat.id, mess,
+            mess = "В основном чате @itgeorgia запрещено публиковать вакансии. \nДля этого есть ряд дочерних и партнёрских чатов:"
+            await bot.send_message(call.message.chat.id, mess,
                              reply_markup=list_markup())
         elif call.data == "cyberpsy":
             mess = "Всех, кто интересуется ИТ и психологией, приглашаю подписаться на канал https://t.me/icyberpsy, также у канала есть чат для обсуждений https://t.me/icyberpsy_chat. Этот канал не относится к беларускому ИТ комьюнити в Грузии, Это просто на правах рекламы ))"
-            bot.send_message(call.message.chat.id, mess)
+            await bot.send_message(call.message.chat.id, mess)
         elif call.data == "list_chats":
             mess = "Список чатов по направлениям ИТ в Грузии"
-            bot.send_message(call.message.chat.id, mess,
-                             reply_markup=list_markup())
+            await bot.send_message(call.message.chat.id, mess,
+                                   reply_markup=list_markup())
 
 
 @bot.message_handler(regexp="Vacancy")
-def send_text(message):
-    mess = "В этом чате запрещено публиковать вакансии. \nЕсть ряд дочерних и партнёрских чатов для публикации вакансий:"
+async def send_text(message):
+    mess = "В этом чате запрещено публиковать вакансии. \nДля этого есть ряд дочерних и партнёрских чатов:"
     bot.send_message(message.chat.id, mess, reply_markup=list_markup())
 
 
 @bot.message_handler(regexp="Вакансия")
-def send_text(message):
-    mess = "В этом чате запрещено публиковать вакансии. \nЕсть ряд дочерних и партнёрских чатов для публикации вакансий:"
-    bot.send_message(message.chat.id, mess, reply_markup=list_markup())
+async def send_text(message):
+    mess = "В этом чате запрещено публиковать вакансии. \nДля этого есть ряд дочерних и партнёрских чатов:"
+    await bot.send_message(message.chat.id, mess, reply_markup=list_markup())
 
 
 @ bot.message_handler(commands=['start'])
-def start(message):
+async def start(message):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    bot.send_message(
+    await bot.send_message(
         message.chat.id, text="Привет, {0.first_name}! Я справочный бот для ИТ комьюнити в Грузии. У меня ты можешь получить информацию разного рода.".format(message.from_user), reply_markup=gen_markup())
 
 
 @ bot.message_handler(commands=['help'])
-def help(message):
-    bot.send_message(
+async def help(message):
+    await bot.send_message(
         message.chat.id, text="Доступнеые команды: \n/start - начало работы с ботом \n/help - помощь \n/about - о боте")
 
 
 @ bot.message_handler(commands=['hr'])
-def hr(message):
-    mess = "В этом чате запрещено публиковать вакансии. \nЕсть ряд дочерних и партнёрских чатов для публикации вакансий:"
-    bot.send_message(message.chat.id, mess, reply_markup=list_markup())
+async def hr(message):
+    mess = "В этом чате запрещено публиковать вакансии. \nДля этого есть ряд дочерних и партнёрских чатов:"
+    await bot.send_message(message.chat.id, mess, reply_markup=list_markup())
 
 
 @ bot.message_handler(commands=['about'])
-def about(message):
-    bot.send_message(
+async def about(message):
+    await bot.send_message(
         message.chat.id, text="У меня пока не широкий функционал и я пока предоставляю только справочную информацию. Возможно, со временем, мои функции расширятся.")
 
 
@@ -106,5 +117,5 @@ def about(message):
 #     bot.send_message(
 #         message.chat.id, "Команда не найдена. Попробуйте ввести /help")
 
-
-bot.infinity_polling()
+asyncio.run(bot.polling())
+# bot.infinity_polling()
