@@ -65,7 +65,7 @@ async def callback_inline(call):
         if call.data == "hr":
             mess = "В основном чате @itgeorgia запрещено публиковать вакансии. \nДля этого есть ряд дочерних и партнёрских чатов:"
             await bot.send_message(call.message.chat.id, mess,
-                             reply_markup=list_markup())
+                                   reply_markup=list_markup())
         elif call.data == "cyberpsy":
             mess = "Всех, кто интересуется ИТ и психологией, приглашаю подписаться на канал https://t.me/icyberpsy, также у канала есть чат для обсуждений https://t.me/icyberpsy_chat. Этот канал не относится к беларускому ИТ комьюнити в Грузии, Это просто на правах рекламы ))"
             await bot.send_message(call.message.chat.id, mess)
@@ -116,6 +116,6 @@ async def about(message):
 # def send_welcome(message):
 #     bot.send_message(
 #         message.chat.id, "Команда не найдена. Попробуйте ввести /help")
-
-asyncio.run(bot.polling())
+if __name__ == '__main__':
+    asyncio.run(bot.polling())
 # bot.infinity_polling()
