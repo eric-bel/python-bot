@@ -1,16 +1,3 @@
-
-
-# data = {
-    #     "chat_id": "1448024821",
-    #     "text": "Hello World!"
-    # } eric
-
-    # data = {
-    #     "chat_id": "1978620067",
-    #     "text": "Привет, любимая!"
-    # }
-
-
 from turtle import update
 from urllib import request, response
 
