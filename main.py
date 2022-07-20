@@ -12,12 +12,12 @@ token = const.TOKEN
 bot = AsyncTeleBot(token=token)
 
 
-async def update_listener(messages):
-    for message in messages:
-        if message.text == '/start':
-            await bot.send_message(message.chat.id, 'Hello!')
+# async def update_listener(messages):
+#     for message in messages:
+#         if message.text == '/start':
+#             await bot.send_message(message.chat.id, 'Hello!')
 
-bot.set_update_listener(update_listener)
+# bot.set_update_listener(update_listener)
 
 
 def gen_markup():
@@ -75,18 +75,6 @@ async def callback_inline(call):
                                    reply_markup=list_markup())
 
 
-@bot.message_handler(regexp="Vacancy")
-async def send_text(message):
-    mess = "В этом чате запрещено публиковать вакансии. \nДля этого есть ряд дочерних и партнёрских чатов:"
-    bot.send_message(message.chat.id, mess, reply_markup=list_markup())
-
-
-@bot.message_handler(regexp="Вакансия")
-async def send_text(message):
-    mess = "В этом чате запрещено публиковать вакансии. \nДля этого есть ряд дочерних и партнёрских чатов:"
-    await bot.send_message(message.chat.id, mess, reply_markup=list_markup())
-
-
 @ bot.message_handler(commands=['start'])
 async def start(message):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -110,6 +98,52 @@ async def hr(message):
 async def about(message):
     await bot.send_message(
         message.chat.id, text="У меня пока не широкий функционал и я пока предоставляю только справочную информацию. Возможно, со временем, мои функции расширятся.")
+
+
+@bot.message_handler(regexp="Vacancy")
+async def send_text(message):
+    mess = "В этом чате запрещено публиковать вакансии. \nДля этого есть ряд дочерних и партнёрских чатов:"
+    await bot.send_message(message.chat.id, mess, reply_markup=list_markup())
+
+
+@bot.message_handler(regexp="Вакансия")
+async def send_text(message):
+    mess = "В этом чате запрещено публиковать вакансии. \nДля этого есть ряд дочерних и партнёрских чатов:"
+    await bot.reply_to(message, mess)
+
+
+@bot.message_handler(regexp="Сколько стоит открыть ИП?")
+async def send_cost(message):
+    mess = "Открыть ИП в Грузии стоит YXZ долларов."
+    await bot.reply_to(message, mess)
+
+
+@bot.message_handler(regexp="Как зовут вашего руководителя?")
+async def send_cos(message):
+    mess = "Giorgi Bezhitashvili"
+    await bot.reply_to(message, mess)
+
+@bot.message_handler(regexp="@Karamash")
+async def send_dasha(message):
+    mess = "Даша в отпуске"
+    await bot.reply_to(message, mess)
+
+@bot.message_handler(regexp="@Cactus42")
+async def send_dasha(message):
+    mess = "хуяктус"
+    await bot.reply_to(message, mess)
+
+@bot.message_handler(regexp="Сколько стоит открыть ООО?")
+async def send_cost2(message):
+    mess = "Отркыть ООО в Грузии стоит YXZ долларов."
+    await bot.reply_to(message, mess)
+
+
+@ bot.message_handler(types=["text"])
+async def test_answer(message):
+    if message.text == 'вапрос':
+        await bot.send_message(message.chat.id, text="У")
+        # await bot.reply_to(message, 'атвит')
 
 
 # @ bot.message_handler()
